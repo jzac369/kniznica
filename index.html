@@ -265,7 +265,7 @@
         <div class="book-meta"><span>32 strán</span><span>Pre začiatočníkov</span></div>
         <div class="book-actions">
           <button class="btn btn-primary" onclick="openViewer('pdfs/00-uvod-mobil-a-bezpecny-internet.pdf','Vaša cesta k istote v mobile a na internete')">📖 Čítať</button>
-          <a class="btn btn-outline" href="pdfs/00-uvod-mobil-a-bezpecny-internet.pdf" download>⬇ Stiahnuť</a>
+          <a class="btn btn-outline" href="pdfs/00-uvod-mobil-a-bezpecny-internet.pdf" download onclick="trackDownload('digistart-sk-kniznica-00-uvod','Vaša cesta k istote v mobile a na internete')">⬇ Stiahnuť</a>
         </div>
       </div>
     </div>
@@ -285,7 +285,7 @@
         <div class="book-meta"><span>20 strán</span><span>Pre začiatočníkov</span></div>
         <div class="book-actions">
           <button class="btn btn-primary" onclick="openViewer('pdfs/01-modul1-istota-v-ovladani-tabletu.pdf','Modul 1 — Istota v ovládaní tabletu')">📖 Čítať</button>
-          <a class="btn btn-outline" href="pdfs/01-modul1-istota-v-ovladani-tabletu.pdf" download>⬇ Stiahnuť</a>
+          <a class="btn btn-outline" href="pdfs/01-modul1-istota-v-ovladani-tabletu.pdf" download onclick="trackDownload('digistart-sk-kniznica-01-modul1','Modul 1 — Istota v ovládaní tabletu')">⬇ Stiahnuť</a>
         </div>
       </div>
     </div>
@@ -305,7 +305,7 @@
         <div class="book-meta"><span>5 strán</span><span>Otestujte sa</span></div>
         <div class="book-actions">
           <button class="btn btn-primary" onclick="openViewer('pdfs/01b-modul1-kviz.pdf','Kvíz — Modul 1: Istota v ovládaní tabletu')">📖 Čítať</button>
-          <a class="btn btn-outline" href="pdfs/01b-modul1-kviz.pdf" download>⬇ Stiahnuť</a>
+          <a class="btn btn-outline" href="pdfs/01b-modul1-kviz.pdf" download onclick="trackDownload('digistart-sk-kniznica-01b-kviz','Kvíz — Modul 1: Istota v ovládaní tabletu')">⬇ Stiahnuť</a>
         </div>
       </div>
     </div>
@@ -325,7 +325,7 @@
         <div class="book-meta"><span>20 strán</span><span>Pre začiatočníkov</span></div>
         <div class="book-actions">
           <button class="btn btn-primary" onclick="openViewer('pdfs/02-modul2-aplikacie-pre-seniorov.pdf','Modul 2 — Praktické aplikácie pre seniorov')">📖 Čítať</button>
-          <a class="btn btn-outline" href="pdfs/02-modul2-aplikacie-pre-seniorov.pdf" download>⬇ Stiahnuť</a>
+          <a class="btn btn-outline" href="pdfs/02-modul2-aplikacie-pre-seniorov.pdf" download onclick="trackDownload('digistart-sk-kniznica-02-modul2','Modul 2 — Praktické aplikácie pre seniorov')">⬇ Stiahnuť</a>
         </div>
       </div>
     </div>
@@ -345,7 +345,7 @@
         <div class="book-meta"><span>20 strán</span><span>Pre začiatočníkov</span></div>
         <div class="book-actions">
           <button class="btn btn-primary" onclick="openViewer('pdfs/03-modul3-internet-ako-pomocnik.pdf','Modul 3 — Internet ako pomocník')">📖 Čítať</button>
-          <a class="btn btn-outline" href="pdfs/03-modul3-internet-ako-pomocnik.pdf" download>⬇ Stiahnuť</a>
+          <a class="btn btn-outline" href="pdfs/03-modul3-internet-ako-pomocnik.pdf" download onclick="trackDownload('digistart-sk-kniznica-03-modul3','Modul 3 — Internet ako pomocník')">⬇ Stiahnuť</a>
         </div>
       </div>
     </div>
@@ -365,7 +365,7 @@
         <div class="book-meta"><span>20 strán</span><span>Bezpečnosť</span></div>
         <div class="book-actions">
           <button class="btn btn-primary" onclick="openViewer('pdfs/04-modul4-online-bezpecnost-hoaxy-dezinformacie.pdf','Modul 4 — Online bezpečnosť, hoaxy a dezinformácie')">📖 Čítať</button>
-          <a class="btn btn-outline" href="pdfs/04-modul4-online-bezpecnost-hoaxy-dezinformacie.pdf" download>⬇ Stiahnuť</a>
+          <a class="btn btn-outline" href="pdfs/04-modul4-online-bezpecnost-hoaxy-dezinformacie.pdf" download onclick="trackDownload('digistart-sk-kniznica-04-modul4','Modul 4 — Online bezpečnosť, hoaxy a dezinformácie')">⬇ Stiahnuť</a>
         </div>
       </div>
     </div>
@@ -378,7 +378,7 @@
 </main>
 
 <footer class="site-footer">
-  © 2026 DigiStart · Akadémia digitálneho vzdelávania · Piešťany
+  © 2026 DigiStart · Akadémia digitálneho vzdelávania · Piešťany · <a href="admin.html" style="color:#b8b2a3;">·</a>
 </footer>
 
 <!-- ===== PDF Viewer Modal ===== -->
@@ -398,10 +398,25 @@
 </div>
 
 <script>
+  // Mapping of PDF path -> tracking key, for the viewer modal's download button
+  const TRACK_KEYS = {
+    'pdfs/00-uvod-mobil-a-bezpecny-internet.pdf': 'digistart-sk-kniznica-00-uvod',
+    'pdfs/01-modul1-istota-v-ovladani-tabletu.pdf': 'digistart-sk-kniznica-01-modul1',
+    'pdfs/01b-modul1-kviz.pdf': 'digistart-sk-kniznica-01b-kviz',
+    'pdfs/02-modul2-aplikacie-pre-seniorov.pdf': 'digistart-sk-kniznica-02-modul2',
+    'pdfs/03-modul3-internet-ako-pomocnik.pdf': 'digistart-sk-kniznica-03-modul3',
+    'pdfs/04-modul4-online-bezpecnost-hoaxy-dezinformacie.pdf': 'digistart-sk-kniznica-04-modul4'
+  };
+
   function openViewer(pdfPath, title){
     document.getElementById('viewerFrame').src = pdfPath;
     document.getElementById('viewerTitle').textContent = title;
-    document.getElementById('viewerDownload').href = pdfPath;
+    const dlBtn = document.getElementById('viewerDownload');
+    dlBtn.href = pdfPath;
+    dlBtn.onclick = function(){
+      const key = TRACK_KEYS[pdfPath];
+      if(key) trackDownload(key, title);
+    };
     document.getElementById('viewerOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -416,6 +431,53 @@
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape') closeViewer();
   });
+
+  // ===== Download tracking =====
+  // Fires on every download click. Does NOT block or delay the actual download.
+  // 1) Increments a public counter (CountAPI) so the admin page can show live totals.
+  // 2) Sends a silent email via Web3Forms with IP/location detail for the record.
+  function trackDownload(countKey, title){
+    // 1. Increment counter (fire and forget)
+    fetch('https://countapi.mileshilliard.com/api/v1/hit/' + countKey).catch(()=>{});
+
+    // 2. Get IP + location, then email the detail (fire and forget, never blocks download)
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then(loc => {
+        const detail = {
+          access_key: '6b8b2a47-c071-4e6b-84f2-d47e8a0a3380',
+          subject: 'Stiahnutie brožúrky: ' + title,
+          brozurka: title,
+          datum_cas: new Date().toLocaleString('sk-SK'),
+          ip_adresa: loc.ip || 'neznáma',
+          mesto: loc.city || 'neznáme',
+          kraj: loc.region || '',
+          krajina: loc.country_name || 'neznáma',
+          poskytovatel: loc.org || '',
+          from_name: 'Knižnica DigiStart — log stiahnutí'
+        };
+        return fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+          body: JSON.stringify(detail)
+        });
+      })
+      .catch(()=>{
+        // If IP lookup fails, still send a record without location detail
+        fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+          body: JSON.stringify({
+            access_key: '6b8b2a47-c071-4e6b-84f2-d47e8a0a3380',
+            subject: 'Stiahnutie brožúrky: ' + title,
+            brozurka: title,
+            datum_cas: new Date().toLocaleString('sk-SK'),
+            poznamka: 'Lokalizácia IP sa nepodarila zistiť.',
+            from_name: 'Knižnica DigiStart — log stiahnutí'
+          })
+        }).catch(()=>{});
+      });
+  }
 </script>
 
 </body>
