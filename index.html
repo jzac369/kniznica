@@ -66,6 +66,65 @@
   }
   .back-link:hover{ background:var(--navy); color:#fff; }
 
+  .admin-lock-btn{
+    width:42px; height:42px; border-radius:50%;
+    background:#fff; border:2px solid var(--navy);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; flex-shrink:0;
+    transition:background 0.2s ease;
+  }
+  .admin-lock-btn:hover{ background:var(--paper-deep); }
+
+  /* ===== Admin login modal ===== */
+  .admin-modal-overlay{
+    position:fixed; inset:0; z-index:110;
+    background:rgba(23,30,38,0.78);
+    display:none;
+    align-items:center; justify-content:center;
+    padding:24px;
+  }
+  .admin-modal-overlay.open{ display:flex; }
+  .admin-modal-box{
+    background:#fff; border-radius:20px; padding:40px 34px;
+    max-width:360px; width:100%; text-align:center;
+    box-shadow:0 30px 60px rgba(0,0,0,0.35);
+    position:relative;
+  }
+  .admin-modal-box .modal-close{
+    position:absolute; top:14px; right:14px;
+    width:34px; height:34px; border-radius:50%;
+    background:var(--paper-deep); border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--navy); font-size:18px;
+  }
+  .admin-modal-box .lock-icon{ margin-bottom:16px; }
+  .admin-modal-box h3{ font-size:22px; margin-bottom:8px; }
+  .admin-modal-box p{ font-size:15px; color:#6a6358; margin-bottom:22px; }
+  .admin-modal-box input{
+    width:100%;
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    font-size:22px; text-align:center; letter-spacing:6px;
+    padding:13px 14px;
+    border:2px solid #E2DCC9; border-radius:12px;
+    background:var(--paper); color:var(--ink);
+    margin-bottom:14px;
+  }
+  .admin-modal-box input:focus{ outline:none; border-color:var(--sky); }
+  .admin-modal-box button.submit-btn{
+    width:100%;
+    font-family:'Atkinson Hyperlegible', sans-serif;
+    font-weight:700; font-size:16px;
+    padding:13px; border-radius:999px; border:none;
+    background:var(--navy); color:#fff; cursor:pointer;
+    transition:background 0.2s;
+  }
+  .admin-modal-box button.submit-btn:hover{ background:#0f2840; }
+  .admin-modal-error{
+    color:#A0402A; font-size:14px; font-weight:700;
+    margin-top:12px; display:none;
+  }
+  .admin-modal-error.show{ display:block; }
+
   .hero-text{
     max-width:var(--maxw); margin:36px auto 0; position:relative; z-index:5; padding:0 24px;
   }
@@ -237,6 +296,9 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="#17375E" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Späť na DigiStart.sk
     </a>
+    <button class="admin-lock-btn" id="adminLockBtn" aria-label="Admin prístup" title="Admin prístup">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="4" y="11" width="16" height="10" rx="2" stroke="#17375E" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#17375E" stroke-width="2"/></svg>
+    </button>
   </div>
 
   <div class="hero-text">
@@ -377,8 +439,23 @@
   </div>
 </main>
 
+<!-- ===== Admin Login Modal ===== -->
+<div class="admin-modal-overlay" id="adminModalOverlay">
+  <div class="admin-modal-box">
+    <button class="modal-close" onclick="closeAdminModal()" aria-label="Zavrieť">✕</button>
+    <div class="lock-icon">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none"><rect x="4" y="11" width="16" height="10" rx="2" stroke="#17375E" stroke-width="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4" stroke="#17375E" stroke-width="2"/></svg>
+    </div>
+    <h3>Admin prístup</h3>
+    <p>Zadajte prístupový kód.</p>
+    <input type="password" id="adminPwInput" inputmode="numeric" maxlength="10" placeholder="••••">
+    <button class="submit-btn" onclick="submitAdminPassword()">Vstúpiť</button>
+    <div class="admin-modal-error" id="adminModalError">Nesprávne heslo. Skúste znova.</div>
+  </div>
+</div>
+
 <footer class="site-footer">
-  © 2026 DigiStart · Akadémia digitálneho vzdelávania · Piešťany · <a href="admin.html" style="color:#b8b2a3;">·</a>
+  © 2026 DigiStart · Akadémia digitálneho vzdelávania · Piešťany
 </footer>
 
 <!-- ===== PDF Viewer Modal ===== -->
@@ -478,6 +555,41 @@
         }).catch(()=>{});
       });
   }
+  // ===== Admin login modal =====
+  const ADMIN_PASSWORD = "2698";
+
+  document.getElementById('adminLockBtn').addEventListener('click', openAdminModal);
+
+  function openAdminModal(){
+    document.getElementById('adminModalOverlay').classList.add('open');
+    document.getElementById('adminModalError').classList.remove('show');
+    const input = document.getElementById('adminPwInput');
+    input.value = '';
+    document.body.style.overflow = 'hidden';
+    setTimeout(()=> input.focus(), 50);
+  }
+  function closeAdminModal(){
+    document.getElementById('adminModalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function submitAdminPassword(){
+    const val = document.getElementById('adminPwInput').value;
+    if(val === ADMIN_PASSWORD){
+      sessionStorage.setItem('digistart_admin_ok', '1');
+      window.location.href = 'admin.html';
+    } else {
+      document.getElementById('adminModalError').classList.add('show');
+      const input = document.getElementById('adminPwInput');
+      input.value = '';
+      input.focus();
+    }
+  }
+  document.getElementById('adminPwInput').addEventListener('keydown', function(e){
+    if(e.key === 'Enter') submitAdminPassword();
+  });
+  document.getElementById('adminModalOverlay').addEventListener('click', function(e){
+    if(e.target === this) closeAdminModal();
+  });
 </script>
 
 </body>
